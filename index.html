@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirim Undangan Untuk Para Tamu</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f7f7f7;
+      text-align: center;
+      padding: 30px;
+    }
+    h2 {
+      color: #003459;
+      margin-bottom: 10px;
+    }
+    .box {
+      background: #fff;
+      max-width: 450px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-generate {
+      background: #d2691e;
+      color: #fff;
+      width: 100%;
+    }
+    .btn-copy { background: #ff7f50; color: #fff; }
+    .btn-view { background: #2e8b57; color: #fff; }
+    .btn-wa { background: #25d366; color: #fff; }
+    .result {
+      margin-top: 15px;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h2>Kirim Undangan Untuk Para Tamu</h2>
+  <p>Buat undangan jadi lebih eksklusif dan personal di setiap undangan yang akan dikirimkan.<br>
+     Silahkan Generate Link di bawah ini:</p>
+
+  <div class="box">
+    <input type="text" id="baseUrl" placeholder="Masukkan Link Undangan">
+    <input type="text" id="nama" placeholder="Masukkan Nama Tamu">
+    <input type="text" id="asal" placeholder="Keterangan Dri/ Dari/ Asal">
+    <input type="text" id="kota" placeholder="Kota/Kabupaten">
+    <button class="btn-generate" onclick="generateLink()">Siapkan Link Undangan</button>
+
+    <div class="result" id="resultLink" style="display:none;"></div>
+
+    <div id="actions" style="display:none;">
+      <button class="btn-copy" onclick="copyLink()">Copy Link</button>
+      <button class="btn-view" onclick="viewLink()">View Link</button>
+      <button class="btn-wa" onclick="shareWA()">Share to Whatsapp</button>
+    </div>
+  </div>
+
+<script>
+  let finalLink = "";
+
+  function generateLink() {
+    const baseUrl = document.getElementById("baseUrl").value.trim();
+    const nama = document.getElementById("nama").value.trim();
+    const asal = document.getElementById("asal").value.trim();
+    const kota = document.getElementById("kota").value.trim();
+
+    if (!baseUrl || !nama) {
+      alert("Link undangan dan Nama Tamu wajib diisi!");
+      return;
+    }
+
+    finalLink = `${baseUrl}?to=${encodeURIComponent(nama)}+${encodeURIComponent(asal)}+${encodeURIComponent(kota)}`;
+    document.getElementById("resultLink").style.display = "block";
+    document.getElementById("resultLink").innerText = finalLink;
+    document.getElementById("actions").style.display = "block";
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(finalLink);
+    alert("Link berhasil dicopy!");
+  }
+
+  function viewLink() {
+    window.open(finalLink, "_blank");
+  }
+
+  function shareWA() {
+    const nama = document.getElementById("nama").value.trim() || "Bapak/Ibu/Saudara/i";
+
+    const pesan = `Assalamu'alaikum Wr. Wb
+Bismillahirrahmanirrahim. Tanpa mengurangi rasa hormat, perkenankan kami mengundang ${nama} - untuk menghadiri acara kami.
+
+*Berikut link undangan kami*, untuk info lengkap dari acara bisa kunjungi :
+${finalLink}
+
+Merupakan suatu kebahagiaan bagi kami apabila ${nama} berkenan untuk hadir dan memberikan doa restu.
+
+*Mohon maaf perihal undangan hanya di bagikan melalui pesan ini.*
+
+Dan karena suasana masih pandemi, diharapkan untuk *tetap menggunakan masker dan datang pada jam yang telah ditentukan.*
+
+Terima kasih banyak atas perhatiannya.
+Wassalamu'alaikum Wr. Wb.
+
+Terima Kasih.`;
+
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
+    window.open(waUrl, "_blank");
+  }
+</script>
+
+</body>
+</html>
